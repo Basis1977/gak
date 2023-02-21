@@ -28,9 +28,9 @@ jobs:
         run: |
            #chmod +x "${GITHUB_WORKSPACE}/../test.sh"
            echo ${GITHUB_WORKSPACE}
-           chmod +x "./test.sh"
-           ${GITHUB_WORKSPACE}/test.sh
-           ./test.sh
+           chmod +x "./shell.sh"
+           ${GITHUB_WORKSPACE}/shell.sh
+           ./shell.sh
           #./test.sh
 
 
