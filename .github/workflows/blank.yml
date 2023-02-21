@@ -32,6 +32,9 @@ jobs:
            ${GITHUB_WORKSPACE}/shell.sh
            ./shell.sh
           #./test.sh
+          
+      - name: Build Docker
+        run: ${PWD}
       - name: get the pushed tag
         id: pushed-tag
         run: |
