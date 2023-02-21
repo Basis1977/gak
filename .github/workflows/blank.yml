@@ -33,18 +33,16 @@ jobs:
            ./shell.sh
           #./test.sh
           
-      - name: Build Docker
-        run: ${PWD}
       - name: get the pushed tag
         id: pushed-tag
         run: |
           echo "TAG_NAME=${{  github.ref_name }}" >> $GITHUB_OUTPUT
-      - run: git config user.name "GitHub Actions" && git config user.email "actions@users.noreply.github.com"
-      - name: Checkout the pushed tag
-        run: |
-          tag_name="${{ steps.pushed-tag.outputs.TAG_NAME }}"
-          git fetch --all --tags
-          git checkout "tags/${tag_name}" -b "merge/development/${tag_name}"
+      #- run: git config user.name "GitHub Actions" && git config user.email "actions@users.noreply.github.com"
+      #- name: Checkout the pushed tag
+        #run: |
+          #tag_name="${{ steps.pushed-tag.outputs.TAG_NAME }}"
+          #git fetch --all --tags
+          #git checkout "tags/${tag_name}" -b "merge/development/${tag_name}"
 
 
 
@@ -57,3 +55,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          echo $GITHUB_OUTPUT
