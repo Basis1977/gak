@@ -28,7 +28,7 @@ steps:
     fi
     sed -i 's/[[:blank:]]*$//' $file_name | cat -vet -
     sed -i '/^$/d' $file_name
-    echo "Tag id is : $tag_id"
+    echo "Tag id  is : $tag_id"
     if grep -q "Tag:" "$file_name"; then
         deploy_tag=$(echo $(sed -n 's/Tag://p' $file_name))
         echo "Deploy Tag is : $deploy_tag"
