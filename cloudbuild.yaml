@@ -19,13 +19,9 @@ steps:
     tag_name=""
     repo_name="gak"
     file_name="/workspace/release/"
-    if [[ $PROJECT_ID == *"mai"* ]]; then
-        file_name=$file_name"snapshot.release"
-        tag_id="GK"
-    else
-        echo "Project id not match with Project "
-        exit 1
-    fi
+
+    file_name=$file_name"snapshot.release"
+    tag_id="GK"
     sed -i 's/[[:blank:]]*$//' $file_name | cat -vet -
     sed -i '/^$/d' $file_name
     echo "Tag id  is : $tag_id"
