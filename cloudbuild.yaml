@@ -31,7 +31,7 @@ steps:
     echo "Tag id is : $tag_id"
     if grep -q "Tag:" "$file_name"; then
         deploy_tag=$(echo $(sed -n 's/Tag://p' $file_name))
-        echo "Deploy Tag is : $deploy_tag"
+        echo "Deploy Tag  is : $deploy_tag"
         release_no=$(echo $deploy_tag | egrep -Eo '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
         tag_name="$tag_id.$release_no."
     else
