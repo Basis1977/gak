@@ -6,6 +6,7 @@ steps:
   - '-c'
   - |
     mkdir -p "/root/.ssh"
+    echo $SSH_DEPLOYMDS_KEY
     gcloud secrets versions access latest --secret=SSH_DEPLOYMDS_KEY >> /root/.ssh/id_rsa
     chmod 400 /root/.ssh/id_rsa
     cat <<EOF >/root/.ssh/config
