@@ -23,7 +23,7 @@ steps:
         file_name=$file_name"snapshot.release"
         tag_id="GK"
     else
-        echo "Project id  not match with Anil "
+        echo "Project id not match with Anil "
         exit 1
     fi
     sed -i 's/[[:blank:]]*$//' $file_name | cat -vet -
