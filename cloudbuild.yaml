@@ -1,0 +1,108 @@
+steps:
+ 
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    mkdir -p "/root/.ssh"
+    gcloud secrets versions access latest --secret=SSH_DEPLOYMDS_KEY >> /root/.ssh/id_rsa
+    chmod 400 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
+    HostName github.com
+    IdentityFile /root/.ssh/id_rsa
+    EOF
+    ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+    tag_id=""
+    release_no=""
+    deploy_tag=""
+    tag_name=""
+    repo_name="ilo-fui-schemas"
+    file_name="/workspace/release/"
+    if [[ $PROJECT_ID == *"dev"* ]]; then
+        file_name=$file_name"snapshot.release"
+        tag_id="SD"        
+    elif [[ (($PROJECT_ID == *"test"*) || ($PROJECT_ID == *"cicd"*))  ]]; then
+        file_name=$file_name"development.release"
+        tag_id="DT"
+    elif [[ $PROJECT_ID == *"prod"* ]]; then
+        file_name=$file_name"production.release"
+        tag_id="PP"
+    elif [[ $PROJECT_ID == *"stage"* ]]; then
+        file_name=$file_name"maintenance.release"
+        tag_id="MS"
+    else
+        echo "Project id not match with DEV or Test or Stage or Prod"
+        exit 1
+    fi
+    sed -i 's/[[:blank:]]*$//' $file_name | cat -vet -
+    sed -i '/^$/d' $file_name
+    echo "Tag id is : $tag_id"
+    if grep -q "Tag:" "$file_name"; then
+        deploy_tag=$(echo $(sed -n 's/Tag://p' $file_name))
+        echo "Deploy Tag is : $deploy_tag"
+        release_no=$(echo $deploy_tag | egrep -Eo '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
+        tag_name="$tag_id.$release_no."
+    else
+        release_no=$(echo $(sed -n 's/Number://p' $file_name))    
+        echo "Release Number is : $release_no"
+        tag_name="$tag_id."$release_no"."
+    fi    
+    echo $release_no >> release.txt
+    echo $file_name >> file_name.txt
+    mkdir ../CICDROLLBACK
+    echo "Cloning repo ..."
+    cd ../CICDROLLBACK
+    git clone git@github.com:ingka-group-digital/$repo_name.git
+    cd $repo_name
+    git config user.email '<>'
+    git config user.name "FUIGCPCICD"
+    git config user.email '<>'
+    git config user.name "FUIGCPCICD"
+    if grep -q "Tag:" "$file_name"; then
+        git checkout $deploy_tag
+    else
+        git checkout $BRANCH_NAME
+    fi
+    git branch -a
+    latest_tag=$(git tag --sort creatordate -l $tag_name* | tail -n1)
+    if [ -z "$latest_tag" ]; then
+        tag_name=""$tag_name"1"
+        echo "Tag Name is : $tag_name"  
+    else
+        tag_name=$(perl -pe 's/(\d+)(?!.*\d+)/$1+1/e' <<< $latest_tag)
+        echo "Tag Name is : $tag_name"
+    fi
+    echo "New Tag name is: $tag_name"
+    if [[ $PROJECT_ID != *"cicd"* ]];then
+        git tag $tag_name -m "Tag from $BRANCH_NAME"
+        git push --tags
+    fi
+    cp -R ../$repo_name /workspace/$repo_name
+    
+- name: gcr.io/cloud-builders/gsutil
+  entrypoint: 'bash'
+  args:
+  - -c
+  - |
+    echo "Copying file from Git to Bucket"
+    modules=$(echo $(sed -n 's/Folder://p' $(cat file_name.txt)))
+    release_no=$(cat release.txt)
+    version_no=$(echo $(sed -n 's/Version://p' $(cat file_name.txt)))
+    echo "Release Number is $release_no"
+    IFS=',' read -ra ADDR <<< "$modules"
+    if grep -q "Tag:" "$(cat file_name.txt)"; then
+        echo "Its Tag deployement"
+        cd ilo-fui-schemas
+    fi
+    grep -rl '"$id": "' ./fui/schemas/jsd | xargs sed -i '0,/"$id": "/s//"$id": "file:\/\/\/run\/cache\/generic-schemas\/'$version_no'\/'$release_no'\/fui\/schemas\/jsd\//'
+    for module_name in "${ADDR[@]}"; do
+      if [ -d "$module_name" ]; then
+        echo "Copying Module :$module_name to bucket"
+        gsutil -m rsync -d -r -x configuration $module_name gs://$PROJECT_ID-mds/generic-schemas/$version_no/$release_no/$module_name
+      else
+        echo "Error: Module $module_name is not avilable"
+      fi
+    done    
+  
+timeout: 1200s
