@@ -1,0 +1,193 @@
+{
+  "description": "Schema for validation of Consignment messages.",
+  "title": "Consignment Schema",
+  "$id": "Consignment.json",
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$defs": {
+    "UOMCodeQuantityType": {
+      "type": "string",
+      "pattern": "(^[A-Z]|[0-9])+"
+    },
+    "QuantityType": {
+      "type": "object",
+      "properties": {
+        "Quantity": {"type": "number"},
+        "UOMCodeQuantity": {"$ref": "#/$defs/UOMCodeQuantityType"}
+      },
+      "required": [
+        "Quantity",
+        "UOMCodeQuantity"
+      ],
+      "additionalProperties": false
+    },
+    "TradeStatus": {
+      "type": "integer",
+      "enum": [ 0, 1, 2 ]
+    },
+    "TermsOfDelivery": {
+      "type": "object",
+      "properties": {
+        "INCOTerm": { "$ref": "#/$defs/INCOTerm" },
+        "AgreedNamedPlace": {
+          "anyOf": [
+            { "$ref": "BusinessUnitBaseTypes.json#/$defs/BusinessUnitAddressReferenceType" },
+            { "type": "string" }
+          ]
+        }
+      },
+      "required": [
+        "INCOTerm",
+        "AgreedNamedPlace"
+      ],
+      "additionalProperties": false
+    },
+    "INCOTerm": { "$ref": "FUIServiceTypes.json#/$defs/nonEmptyString3" },
+    "ConsignmentSource": { "$ref": "FUIServiceTypes.json#/$defs/nonEmptyString20" },
+    "ConsignmentLineNumber": { "$ref": "FUIServiceTypes.json#/$defs/positiveInteger" },
+    "UnitLoadSSCC": { "$ref": "FUIServiceTypes.json#/$defs/nonEmptyString18" },
+    "ConsignmentRequest": {
+      "type": "object",
+      "properties": {
+        "MsgHeader": { "$ref": "MessageHeader.json#" },
+        "MsgBody": { "$ref": "#/$defs/ConsignmentB2B" }
+      },
+      "required": [ "MsgHeader", "MsgBody" ],
+      "additionalProperties": false
+    },
+    "ConsignmentFlowType": {
+      "type": "string",
+      "enum": [
+        "DIRECT",
+        "DCIN",
+        "DCOUT",
+        "CDCIN",
+        "CDCOUT",
+        "CDCSSTO",
+        "CDT",
+        "CLEARINGS",
+        "STOCKSWITCH",
+        "RETURNS",
+        "PARCEL",
+        "SPECIAL"
+      ]
+    },
+    "Rec24Event": {
+      "type": "object",
+      "properties": {
+        "Rec24Code": { "$ref": "FUIServiceTypes.json#/$defs/positiveInteger" },
+        "SubCode": { "type": "integer" },
+        "EventData": {
+          "type": "object",
+          "properties": {
+            "PreviousConsigneeReference": { "$ref": "BusinessUnitBaseTypes.json#/$defs/BusinessUnitAddressReferenceType" }
+          },
+          "required": [ "PreviousConsigneeReference" ],
+          "additionalProperties": false
+        }
+      },
+      "required": [ "Rec24Code" ],
+      "additionalProperties": false
+    },
+    "ConsignmentId": {
+      "type": "object",
+      "properties": {
+        "CreatorReference": { "$ref": "BusinessUnitBaseTypes.json#/$defs/BusinessUnitReferenceType" },
+        "ConsignmentNumber": {
+          "type": "string"
+        }
+      },
+      "required": [ "CreatorReference", "ConsignmentNumber" ],
+      "additionalProperties": false
+    },
+    "ConsignmentLineReference": {
+      "type": "object",
+      "properties": {
+        "ConsignmentId": { "$ref": "#/$defs/ConsignmentId" },
+        "ConsignmentLineNumber": { "$ref": "#/$defs/ConsignmentLineNumber" }
+      },
+      "required": [
+        "ConsignmentId",
+        "ConsignmentLineNumber"
+      ],
+      "additionalProperties": false
+    },
+    "ConsignmentLine": {
+      "type": "object",
+      "properties": {
+        "ConsignmentLineNumber": { "$ref": "FUIServiceTypes.json#/$defs/nonNegativeInteger" },
+        "Quantity": { "$ref": "#/$defs/QuantityType" },
+        "ItemReference": { "$ref": "ItemBaseTypes.json#/$defs/ItemReferenceType" },
+        "ItemSupplierReference": { "$ref": "BusinessUnitBaseTypes.json#/$defs/BusinessUnitReferenceType" },
+        "ItemNameStandardRepresentation": { "type": "string" },
+        "ItemSKU": { "$ref": "ItemBaseTypes.json#/$defs/ItemSKUType" },
+        "ItemDWPReference": { "$ref": "ItemBaseTypes.json#/$defs/DWPReferenceType" },
+        "UnitLoadSSCC": { "$ref": "#/$defs/UnitLoadSSCC" },
+        "ProductionWeek": { "$ref": "FUIServiceTypes.json#/$defs/fuiDate" },
+        "CountryOfOrigin": { "$ref": "FUIServiceTypes.json#/$defs/CountryCodeType" },
+        "TradeStatus": { "$ref": "#/$defs/TradeStatus" },
+        "TrackingNumber": { "$ref": "DeliveryLabelRequest.json#/$defs/TrackingNumber" }
+      },
+      "required": [
+        "ConsignmentLineNumber",
+        "Quantity",
+        "ItemNameStandardRepresentation",
+        "ItemSKU"
+      ],
+      "additionalProperties": false
+    },
+    "ConsignmentB2B": {
+      "type": "object",
+      "properties": {
+        "Event": { "$ref": "#/$defs/Rec24Event" },
+        "CreationDateTime": { "$ref": "FUIServiceTypes.json#/$defs/fuiDateTime" },
+        "LatestUpdateDateTime": { "$ref": "FUIServiceTypes.json#/$defs/fuiDateTime" },
+        "Identifier": { "$ref": "#/$defs/ConsignmentId" },
+        "ConsignmentSource": { "$ref": "#/$defs/ConsignmentSource" },
+        "ConsigneeReference": { "$ref": "BusinessUnitBaseTypes.json#/$defs/BusinessUnitAddressReferenceType" },
+        "DropOffAddressReference": { "$ref": "BusinessUnitBaseTypes.json#/$defs/BusinessUnitAddressReferenceType" },
+        "ConsignmentFlowType": { "$ref": "#/$defs/ConsignmentFlowType" },
+        "ConsignmentTotals": {
+          "type": "object",
+          "properties": {
+            "TotalNumberOfPackages": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Arrival": {
+          "type": "object",
+          "properties": {
+            "PlannedDateTime": { "$ref": "FUIServiceTypes.json#/$defs/fuiDateTime" },
+            "EstimatedDateTime": { "$ref": "FUIServiceTypes.json#/$defs/fuiDateTime" },
+            "ActualDateTime": { "$ref": "FUIServiceTypes.json#/$defs/fuiDateTime" }
+          },
+          "required": [ "PlannedDateTime" ],
+          "additionalProperties": false
+        },
+        "FirstAvailableConsignmentLineIdentifier": { "$ref": "FUIServiceTypes.json#/$defs/nonNegativeInteger" },
+        "ConsignmentLines": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ConsignmentLine" }
+        }
+      },
+      "required": [
+        "Identifier",
+        "ConsignmentSource",
+        "ConsigneeReference",
+        "DropOffAddressReference",
+        "ConsignmentFlowType",
+        "Arrival",
+        "FirstAvailableConsignmentLineIdentifier"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "MsgHeader": { "$ref": "MessageHeader.json#" },
+    "MsgBody": { "$ref": "#/$defs/ConsignmentB2B" }
+  },
+  "required": [ "MsgHeader", "MsgBody" ],
+  "additionalProperties": false
+}
