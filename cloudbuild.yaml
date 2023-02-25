@@ -19,7 +19,7 @@ steps:
     tag_name=""
     repo_name="gak"
     file_name="/workspace/release/"
-    if [[ $PROJECT_ID == *"anil"* ]]; then
+    if [[ $PROJECT_ID == *"gak"* ]]; then
         file_name=$file_name"snapshot.release"
         tag_id="GK"
     else
