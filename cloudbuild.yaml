@@ -42,7 +42,7 @@ steps:
     echo $release_no >> release.txt
     echo $file_name >> file_name.txt
     mkdir ../CICDROLLBACK
-    echo "Cloning repo ..."
+    echo "Cloning  repo ..."
     cd ../CICDROLLBACK
     git clone git@github.com:Basis1977/$repo_name.git
     cd $repo_name
