@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns="ingka.ikea.com/ilo/b2b/fui/BusinessUnit"
+            targetNamespace="ingka.ikea.com/ilo/b2b/fui/BusinessUnit" 
+            elementFormDefault="qualified"
+            version="1.0">
+  <xsd:complexType name="BusinessUnitReferenceType">
+    <xsd:sequence>
+      <xsd:element name="BusinessUnitCode" type="BusinessUnitCodeType"/>
+      <xsd:element name="BusinessUnitType" type="BusinessUnitTypeType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="BusinessUnitAddressReferenceType">
+    <xsd:complexContent>
+      <xsd:extension base="BusinessUnitReferenceType">
+        <xsd:sequence>
+          <xsd:element name="BusinessUnitSequence">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:integer">
+                <xsd:totalDigits value="4"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:simpleType name="BusinessUnitCodeType">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9A-Z]{3,5}|AP"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="BusinessUnitTypeType">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[A-Z]{2,3}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>
