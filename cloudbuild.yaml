@@ -36,7 +36,7 @@ steps:
         tag_name="$tag_id.$release_no."
     else
         release_no=$(echo $(sed -n 's/Number://p' $file_name))    
-        echo "Release Number  is : $release_no"
+        echo "Release Number is : $release_no"
         tag_name="$tag_id."$release_no"."
     fi    
     echo $release_no >> release.txt
