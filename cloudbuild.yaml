@@ -23,7 +23,7 @@ steps:
         file_name=$file_name"snapshot.release"
         tag_id="GK"
     else
-        echo "Project id not match with Anil "
+        echo "Project id not match with Project "
         exit 1
     fi
     sed -i 's/[[:blank:]]*$//' $file_name | cat -vet -
@@ -86,7 +86,7 @@ steps:
         echo "Its Tag deployement"
         cd ilo-fui-schemas
     fi
-    grep -rl '"$id": "' ./fui/schemas/jsd | xargs sed -i '0,/"$id": "/s//"$id": "file:\/\/\/run\/cache\/generic-schemas\/'$version_no'\/'$release_no'\/fui\/schemas\/jsd\//'
+    grep -rl '"$id": "' ./schemas/jsd | xargs sed -i '0,/"$id": "/s//"$id": "file:\/\/\/run\/cache\/generic-schemas\/'$version_no'\/'$release_no'\/schemas\/jsd\//'
     for module_name in "${ADDR[@]}"; do
       if [ -d "$module_name" ]; then
         echo "Copying Module :$module_name to bucket"
