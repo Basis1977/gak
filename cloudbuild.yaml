@@ -3,7 +3,6 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
   args:
-  - '-c'
     tag_id=""
     release_no=""
     deploy_tag=""
