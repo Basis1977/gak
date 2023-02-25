@@ -65,7 +65,7 @@ steps:
         echo "Tag Name  is : $tag_name"
     fi
     echo "New Tag name is: $tag_name"
-    if [[ $PROJECT_ID != *"cicd"* ]];then
+    if [[ $PROJECT_ID != *"anil"* ]];then
         git tag $tag_name -m "Tag from $BRANCH_NAME"
         git push --tags
     fi
