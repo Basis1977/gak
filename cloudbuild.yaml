@@ -37,7 +37,15 @@ steps:
     fi    
     echo $release_no >> release.txt
     echo $file_name >> file_name.txt
+    mkdir ../GAKREPO
+    echo "Cloning  repo ..."
+    cd ../GAKREPO
+    git clone https://github.com/Basis1977/gak.git
     cd $repo_name
+    git config user.email '<>'
+    git config user.name "Basis1977"
+    git config user.email '<>'
+    git config user.name "Basis1977"
     if grep -q "Tag:" "$file_name"; then
         git checkout $deploy_tag
     else
