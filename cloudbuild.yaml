@@ -52,7 +52,7 @@ steps:
         echo "Tag Name is : $tag_name"  
     else
         tag_name=$(perl -pe 's/(\d+)(?!.*\d+)/$1+1/e' <<< $latest_tag)
-        echo "Tag Name  is : $tag_name"
+        echo "Tag Name is : $tag_name"
     fi
     echo "New Tag name is: $tag_name"
     if [[ $PROJECT_ID != *"anil"* ]];then
