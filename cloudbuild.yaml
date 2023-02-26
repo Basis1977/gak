@@ -5,19 +5,19 @@ steps:
   args:
   - '-c'
   - |
-    mkdir -p "/root/.ssh"
-    gcloud secrets versions access latest --secret=ssh-pub-key >> /root/.ssh/id_rsa
-    chmod 400 /root/.ssh/id_rsa
-    cat <<EOF >/root/.ssh/config
+    mkdir -p "/home/anil_gochipathala/anil/.ssh"
+    gcloud secrets versions access latest --secret=ssh-pub-key >> /home/anil_gochipathala/anil/.ssh/id_rsa
+    chmod 400 /home/anil_gochipathala/anil/.ssh/id_rsa
+    cat <<EOF >/home/anil_gochipathala/anil/.ssh/config
     HostName github.com
-    IdentityFile /root/.ssh/id_rsa
+    IdentityFile /home/anil_gochipathala/anil/.ssh/id_rsa
     EOF
-    ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+    ssh-keyscan -t rsa github.com > /home/anil_gochipathala/anil/.ssh/known_hosts
     tag_id=""
     release_no=""
     deploy_tag=""
     tag_name=""
-    repo_name="IKEASampleCD"
+    repo_name="gak"
     file_name="/workspace/release/"
 
     file_name=$file_name"snapshot.release"
