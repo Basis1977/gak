@@ -13,7 +13,7 @@ steps:
     #ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
     ssh-keyscan -t rsa github.com > /home/anil_gochipathala/.ssh/known_hosts
     #echo ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-    cp known_hosts.github /home/anil_gochipathala/.ssh/known_hosts
+    #cp known_hosts.github /home/anil_gochipathala/.ssh/known_hosts
   volumes:
   - name: 'ssh'
     path: /home/anil_gochipathala/.ssh
