@@ -17,7 +17,7 @@ steps:
     release_no=""
     deploy_tag=""
     tag_name=""
-    repo_name="gak"
+    repo_name="IKEASampleCD"
     file_name="/workspace/release/"
 
     file_name=$file_name"snapshot.release"
