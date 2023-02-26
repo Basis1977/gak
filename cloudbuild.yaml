@@ -11,7 +11,7 @@ steps:
 
 - name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
-  args:
+  args:['clone', 'https://github.com/Basis1977/gak.git']
   - '-c'
   - |
     tag_id=""
