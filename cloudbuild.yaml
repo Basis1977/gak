@@ -38,8 +38,6 @@ steps:
     echo $release_no >> release.txt
     echo $file_name >> file_name.txt
     cd $repo_name
-    git config --global user.email "sreenivas.middleware@gmail.com"
-    git config --global user.name "Basis1977"
     if grep -q "Tag:" "$file_name"; then
         git checkout $deploy_tag
     else
