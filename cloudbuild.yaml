@@ -6,7 +6,7 @@ steps:
   - '-c'
   - |
     mkdir -p "/home/.ssh"
-    gcloud secrets versions access latest --secret=SSH_DEPLOYMDS_KEY >> /home/.ssh/id_rsa
+    gcloud secrets versions access latest --secret=my-ssh-key >> /home/.ssh/id_rsa
     chmod 400 /home/.ssh/id_rsa
     cat <<EOF >/home/.ssh/config
     HostName github.com
