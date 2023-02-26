@@ -5,14 +5,14 @@ steps:
   args:
   - '-c'
   - |
-    mkdir -p "/home/.ssh"
-    gcloud secrets versions access latest --secret=my-ssh-key >> /home/.ssh/id_rsa
-    chmod 400 /home/.ssh/id_rsa
-    cat <<EOF >/home/.ssh/config
+    mkdir -p "/root/.ssh"
+    gcloud secrets versions access latest --secret=my-ssh-key >> /root/.ssh/id_rsa
+    chmod 400 /root/.ssh/id_rsa
+    cat <<EOF >/root/.ssh/config
     HostName github.com
-    IdentityFile /home/.ssh/id_rsa
+    IdentityFile /root/.ssh/id_rsa
     EOF
-    ssh-keyscan -t rsa github.com > /home/.ssh/known_hosts
+    ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
     tag_id=""
     release_no=""
     deploy_tag=""
