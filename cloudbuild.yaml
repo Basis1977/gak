@@ -3,9 +3,9 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args: ['clone', 'https://github.com/Basis1977/gak.git']
   dir: 'examples/version-file'
-- name: 'gcr.io/$PROJECT_ID/git'
+- name: 'gcr.io/cloud-builders/git'
   args: ['config', '--global', 'test.foo', 'bar']
-- name: 'gcr.io/$PROJECT_ID/git'
+- name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
   args: ['-c', 'git config --global --get test.foo | grep ^bar$']
     
