@@ -1,5 +1,8 @@
 steps:
- 
+
+- name: 'gcr.io/$PROJECT_ID/git'
+  args: ['clone', 'https://github.com/Basis1977/gak.git']
+  dir: 'examples/version-file'
 - name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'
   args:
@@ -40,7 +43,7 @@ steps:
     mkdir ../GAKREPO
     echo "Cloning  repo ..."
     cd ../GAKREPO
-    git clone git@github.com:Basis1977/$repo_name.git
+    git clone git@github.com:Basis1977/gak.git
     cd $repo_name
     git config user.email '<>'
     git config user.name "Basis1977"
