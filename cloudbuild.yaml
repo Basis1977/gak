@@ -3,19 +3,6 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args: ['clone', 'https://github.com/Basis1977/gak.git']
   dir: 'examples/version-file'
-- name: 'gcr.io/cloud-builders/git'
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - |
-    mkdir -p "/home/anil_gochipathala/anil/.ssh"
-    gcloud secrets versions access latest --secret=ssh-pub-key >> /home/anil_gochipathala/anil/.ssh/id_rsa
-    chmod 400 /home/anil_gochipathala/anil/.ssh/id_rsa
-    cat <<EOF >/home/anil_gochipathala/anil/.ssh/config
-    HostName github.com
-    IdentityFile /home/anil_gochipathala/anil/.ssh/id_rsa
-    EOF
-    ssh-keyscan -t rsa github.com > /home/anil_gochipathala/anil/.ssh/known_hosts
     tag_id=""
     release_no=""
     deploy_tag=""
@@ -40,15 +27,6 @@ steps:
     fi    
     echo $release_no >> release.txt
     echo $file_name >> file_name.txt
-    mkdir ../GAKREPO
-    echo "Cloning  repo ..."
-    cd ../GAKREPO
-    git clone git@github.com:Basis1977/gak.git
-    cd $repo_name
-    git config user.email '<>'
-    git config user.name "Basis1977"
-    git config user.email '<>'
-    git config user.name "Basis1977"
     if grep -q "Tag:" "$file_name"; then
         git checkout $deploy_tag
     else
