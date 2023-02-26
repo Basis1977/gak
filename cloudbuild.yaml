@@ -6,13 +6,17 @@ steps:
   args:
   - -c
   - |
-    echo "$$SSH_KEY" >> /root/.ssh/id_rsa
-    chmod 400 /root/.ssh/id_rsa
-    ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-    #cp known_hosts.github /root/.ssh/known_hosts
+    #echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+    echo "$$SSH_KEY" >> /home/anil_gochipathala/.ssh/id_rsa
+    #chmod 400 /root/.ssh/id_rsa
+    chmod 400 /home/anil_gochipathala/.ssh/id_rsa
+    #ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+    ssh-keyscan -t rsa github.com > /home/anil_gochipathala/.ssh/known_hosts
+    #echo ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+    cp known_hosts.github /home/anil_gochipathala/.ssh/known_hosts
   volumes:
   - name: 'ssh'
-    path: /root/.ssh
+    path: /home/anil_gochipathala/.ssh
 
 # Clone the repository
 - name: 'gcr.io/cloud-builders/git'
@@ -22,7 +26,7 @@ steps:
   - git@github.com:Basis1977/gak.git
   volumes:
   - name: 'ssh'
-    path: /root/.ssh
+    path: /home/anil_gochipathala/.ssh
 
 availableSecrets:
   secretManager:
