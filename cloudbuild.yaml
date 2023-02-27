@@ -77,7 +77,7 @@ steps:
     echo "Release Number is $release_no"
     IFS=',' read -ra ADDR <<< "$modules"
     if grep -q "Tag:" "$(cat file_name.txt)"; then
-        echo "Its Tag deployement"
+        echo "Its Tag  deployement"
         cd gak
     fi
     grep -rl '"$id": "' ./schemas/jsd | xargs sed -i '0,/"$id": "/s//"$id": "file:\/\/\/run\/cache\/generic-schemas\/'$version_no'\/'$release_no'\/schemas\/jsd\//'
