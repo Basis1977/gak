@@ -78,7 +78,7 @@ steps:
     IFS=',' read -ra ADDR <<< "$modules"
     if grep -q "Tag:" "$(cat file_name.txt)"; then
         echo "Its Tag deployement"
-        cd ilo-fui-schemas
+        cd gak
     fi
     grep -rl '"$id": "' ./schemas/jsd | xargs sed -i '0,/"$id": "/s//"$id": "file:\/\/\/run\/cache\/generic-schemas\/'$version_no'\/'$release_no'\/schemas\/jsd\//'
     for module_name in "${ADDR[@]}"; do
