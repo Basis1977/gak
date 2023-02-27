@@ -40,12 +40,12 @@ steps:
     cd ../GAKREPO
     git clone https://github.com/Basis1977/gak.git
     cd $repo_name
-    #git config user.email '<>'
-    #git config user.name "Basis1977"
-    #git config user.email '<>'
-    #git config user.name "Basis1977"
-    git config --global user.email "sreenivas.middleware@gmail.com"
-    git config --global user.name "Basis1977"
+    git config user.email '<>'
+    git config user.name "Basis1977"
+    git config user.email '<>'
+    git config user.name "Basis1977"
+    #git config --global user.email "sreenivas.middleware@gmail.com"
+    #git config --global user.name "Basis1977"
     if grep -q "Tag:" "$file_name"; then
         git checkout $deploy_tag
     else
